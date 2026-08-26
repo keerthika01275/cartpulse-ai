@@ -490,7 +490,12 @@ def sentry_router_node(state: AgentState) -> Dict[str, Any]:
         active = "CHECKOUT_AGENT"
     elif event == "ITEM_ADDED":
         active = "CROSS_SELL_AGENT"
-    elif any(w in user_lower for w in ["too expensive", "overpriced", "cheaper option", "budget option", "can't afford", "cannot afford", "out of budget", "lower price alternative", "any cheaper", "cheaper version", "too costly"]):
+    elif event in ["DOWN_SELL", "PRICE_HESITATION", "TIER_SWAP", "BUDGET_SWAP"] or any(w in user_lower for w in [
+        "too expensive", "overpriced", "cheaper option", "budget option", "can't afford", "cannot afford",
+        "out of budget", "lower price alternative", "any cheaper", "cheaper version", "too costly",
+        "cheaper alternative", "budget alternative", "downsell", "down-sell", "down sell", "tier swap",
+        "exceeds my budget", "over my budget", "lower cost", "less expensive", "cheaper", "cheapest", "downgrade"
+    ]):
         active = "PRICE_HESITATION_AGENT"
     elif any(w in user_lower for w in ["price trend", "price history", "historical price", "will price go up", "future price", "inflation", "cheaper later", "wait for sale"]):
         active = "PRICE_TREND_AGENT"
